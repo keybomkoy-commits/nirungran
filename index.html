@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>หน้าหลัก</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: url('bg.jpg') no-repeat center center/cover;
+      font-family: 'Prompt', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 0;
+    }
+
+    .glow {
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0, 162, 255, 0.25), transparent 70%);
+      top: -50%;
+      left: -50%;
+      animation: move-glow 10s infinite linear;
+      z-index: 0;
+    }
+
+    @keyframes move-glow {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(50%, 50%); }
+      100% { transform: translate(0, 0); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      animation: fadeIn 1.5s ease-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .main-title {
+      font-size: 3em;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(0, 200, 255, 0.7);
+      animation: fadeIn 1.5s ease-out;
+    }
+
+    .btn-member {
+      display: inline-block;
+      background: linear-gradient(135deg, #007bff, #00d4ff);
+      color: white;
+      font-weight: 600;
+      font-size: 1.5em;
+      padding: 16px 50px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-member::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.4);
+      transform: skewX(-30deg);
+      transition: 0.5s;
+    }
+
+    .btn-member:hover::before {
+      left: 200%;
+    }
+
+    .btn-member:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 0 30px rgba(0, 200, 255, 0.6);
+    }
+
+    .footer-text {
+      font-size: 1.1em;
+      color: #ddd;
+      text-shadow: 0 0 10px rgba(0,0,0,0.8);
+      animation: fadeIn 2.2s ease-out;
+    }
+
+    @media (max-width: 480px) {
+      .main-title {
+        font-size: 2em;
+      }
+      .btn-member {
+        font-size: 1.2em;
+        padding: 12px 40px;
+      }
+      .footer-text {
+        font-size: 0.9em;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="glow"></div>
+  <div class="container">
+    <div class="main-title">Namee Gang Member list</div>
+    <a href="member.html" class="btn-member">Member</a>
+    <div class="footer-text">© 2025 BY DCNX</div>
+  </div>
+</body>
+</html>

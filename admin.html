@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ระบบหลังบ้าน</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap');
+
+    body {
+      font-family: 'Prompt', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('bg2.jpg') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      color: #fff;
+    }
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 0;
+    }
+
+    .panel {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.1);
+      padding: 25px 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 450px;
+      backdrop-filter: blur(6px);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(0,255,255,0.4);
+    }
+
+    input {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #007bff, #00d4ff);
+      color: #fff;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(0,200,255,0.4);
+    }
+
+    .member-list {
+      text-align: left;
+      margin-top: 20px;
+      max-height: 250px;
+      overflow-y: auto;
+      background: rgba(255,255,255,0.05);
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .member-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding: 5px 0;
+    }
+
+    .member-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #00d4ff;
+    }
+
+    .member-name {
+      font-weight: 500;
+    }
+
+    .rank {
+      font-size: 0.9em;
+      opacity: 0.8;
+    }
+
+    .member-item button {
+      width: auto;
+      padding: 5px 10px;
+      font-size: 0.9em;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <!-- หน้า Login -->
+  <div class="panel" id="loginPanel">
+    <h2>เข้าสู่ระบบ Admin</h2>
+    <input type="password" id="adminPass" placeholder="รหัสผ่านผู้ดูแล">
+    <button onclick="checkPassword()">เข้าสู่ระบบ</button>
+  </div>
+
+  <!-- หน้า Admin Panel -->
+  <div class="panel" id="adminPanel" style="display:none;">
+    <h2>จัดการสมาชิก</h2>
+    <input type="text" id="name" placeholder="ชื่อสมาชิก">
+    <input type="text" id="rank" placeholder="ตำแหน่ง (เช่น Owner, Member)">
+    <input type="text" id="fb" placeholder="ลิงก์ Facebook">
+    <input type="text" id="avatar" placeholder="URL รูปโปรไฟล์">
+
+    <button onclick="addOrUpdateMember()">➕ เพิ่ม / 💾 แก้ไขสมาชิก</button>
+    <button onclick="resetDefault()">🔄 รีเซ็ตค่าเริ่มต้น</button>
+
+    <div class="member-list" id="memberList"></div>
+  </div>
+
+  <script>
+    const ADMIN_PASSWORD = "Leader_StaffNirungran_Keyadmin"; // รหัสผ่านผู้ดูแล
+
+    const defaultMembers = [];
+    let editIndex = -1;
+
+    function checkPassword() {
+      const pass = document.getElementById('adminPass').value;
+      if(pass === ADMIN_PASSWORD) {
+        document.getElementById('loginPanel').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        loadMembers();
+      } else {
+        alert("❌ รหัสผ่านไม่ถูกต้อง!");
+      }
+    }
+
+    function loadMembers() {
+      const members = JSON.parse(localStorage.getItem("members")) || defaultMembers;
+      const list = document.getElementById('memberList');
+      list.innerHTML = '';
+      members.forEach((m, index) => {
+        const div = document.createElement('div');
+        div.className = 'member-item';
+        div.innerHTML = `
+          <div class="member-left">
+            <img src="${m.avatar || 'default-avatar.png'}" alt="avatar" class="avatar">
+            <span class="member-name">${m.name}</span>
+            <a href="${m.fb}" target="_blank" class="fb-btn">FB</a>
+          </div>
+          <span class="rank">${m.rank}</span>
+          <span>
+            <button onclick="editMember(${index})">✏️ แก้ไข</button>
+            <button onclick="deleteMember(${index})">🗑️ ลบ</button>
+          </span>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function addOrUpdateMember() {
+      const name = document.getElementById('name').value.trim();
+      const rank = document.getElementById('rank').value.trim();
+      const fb = document.getElementById('fb').value.trim();
+      const avatar = document.getElementById('avatar').value.trim();
+
+      if(!name || !rank || !fb) { alert("กรุณากรอกข้อมูลให้ครบ"); return; }
+
+      const members = JSON.parse(localStorage.getItem("members")) || defaultMembers;
+
+      if(editIndex >= 0) {
+        members[editIndex] = { name, rank, fb, avatar };
+        alert("💾 แก้ไขสมาชิกเรียบร้อยแล้ว!");
+        editIndex = -1;
+      } else {
+        members.push({ name, rank, fb, avatar });
+        alert("✅ เพิ่มสมาชิกเรียบร้อยแล้ว!");
+      }
+
+      localStorage.setItem("members", JSON.stringify(members));
+
+      // ล้างช่อง input
+      document.getElementById('name').value = '';
+      document.getElementById('rank').value = '';
+      document.getElementById('fb').value = '';
+      document.getElementById('avatar').value = '';
+
+      loadMembers();
+    }
+
+    function editMember(index) {
+      const members = JSON.parse(localStorage.getItem("members")) || defaultMembers;
+      const m = members[index];
+      document.getElementById('name').value = m.name;
+      document.getElementById('rank').value = m.rank;
+      document.getElementById('fb').value = m.fb;
+      document.getElementById('avatar').value = m.avatar;
+      editIndex = index;
+    }
+
+    function deleteMember(index) {
+      if(!confirm("❌ คุณต้องการลบสมาชิกนี้หรือไม่?")) return;
+      const members = JSON.parse(localStorage.getItem("members")) || defaultMembers;
+      members.splice(index,1);
+      localStorage.setItem("members", JSON.stringify(members));
+      loadMembers();
+    }
+
+    function resetDefault() {
+      if(!confirm("⚠️ คุณต้องการรีเซ็ตสมาชิกทั้งหมดหรือไม่?")) return;
+      localStorage.setItem("members", JSON.stringify(defaultMembers));
+      loadMembers();
+      alert("✅ รีเซ็ตเรียบร้อยแล้ว!");
+    }
+  </script>
+</body>
+</html>

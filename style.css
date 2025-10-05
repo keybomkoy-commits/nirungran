@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background: url('bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.75);
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 2rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+
+.logo-img {
+  width: 100px;
+  height: auto;
+  opacity: 0.9;
+  margin-bottom: 25px;
+}
+
+.main-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+button {
+  background: rgba(30, 30, 30, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  letter-spacing: 0.5px;
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
+}
+
+.main-btn {
+  background: rgba(60, 60, 60, 0.9);
+  font-weight: 700;
+}
+
+.secondary-btn {
+  background: rgba(45, 45, 45, 0.8);
+}
+
+.partner-text {
+  font-size: 1rem;
+  font-weight: 500;
+  opacity: 0.8;
+  margin-bottom: 15px;
+  letter-spacing: 0.5px;
+}
+
+.partner-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+footer {
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.75;
+  margin-top: 20px;
+}
+
+.brand {
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Avatar Member */
+.avatar {
+  width: 50px;            /* ขนาดพอดี */
+  height: 50px;           /* ขนาดพอดี */
+  border-radius: 50%;     /* ทำให้เป็นวงกลม */
+  object-fit: cover;      /* ครอบเต็มวงกลม ไม่ยืด */
+  border: 2px solid #00d4ff; /* ขอบฟ้าเข้ากับธีม */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.2); /* ขยาย 20% */
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.7); /* แสงฟ้า */
+}
+
+.member-left {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* เว้นระยะรูปกับชื่อ */
+}
+
+.member-name {
+  font-weight: 500;
+  font-size: 1.1em;
+  color: #fff;
+}
+
+.rank {
+  font-size: 0.9em;
+  opacity: 0.8;
+  color: #ccc;
+}
